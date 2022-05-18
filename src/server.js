@@ -6,8 +6,10 @@ import videoRouter from "./routers/videoRouter";
 
 const PORT = 3000;
 const app = express();
-//Setting up express.js server to use Pug Template
+//Assign Pug Template as a view engine
 app.set("view engine", "pug");
+//Set directory of views folder
+app.set("views", process.cwd() + "/src/views");
 
 //Create morgan logger middleware to log HTTP requests and errors
 const logger = morgan("dev");
