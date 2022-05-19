@@ -14,6 +14,9 @@ app.set("views", process.cwd() + "/src/views");
 //Create morgan logger middleware to log HTTP requests and errors
 const logger = morgan("dev");
 app.use(logger);
+//Middleware that translates html forms into Javascript object
+//It enables express to read form body
+app.use(express.urlencoded({ extended: true }));
 //Use routers to organise different urls
 //Express leads to routers below when such urls are requested
 app.use("/", globalRouter);
