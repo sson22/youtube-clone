@@ -4,7 +4,6 @@ import globalRouter from "./routers/globalRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 
-const PORT = 3000;
 const app = express();
 //Assign Pug Template as a view engine
 app.set("view engine", "pug");
@@ -40,7 +39,5 @@ const login = (req, res) => {
 app.get("/", myLogger, home);
 ////Response to "/login" request
 app.get("/login", login);
-const handleListening = () =>
-  console.log(`Server Listening on port http://localhost:${PORT}`);
-//Listens the port and handle the request
-app.listen(PORT, handleListening);
+
+export default app;
