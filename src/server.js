@@ -1,6 +1,7 @@
 import express from "express";
 import morgan from "morgan";
-import globalRouter from "./routers/globalRouter";
+import session from "express-session";
+import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 
@@ -16,9 +17,22 @@ app.use(logger);
 //Middleware that translates html forms into Javascript object
 //It enables express to read form body
 app.use(express.urlencoded({ extended: true }));
+
+//Initialise session middleware before routers
+//Session remembers everyone who visied website-including the ones who are not logged in
+app.use(
+  session({
+    //Required configuration
+    secret: "Hello",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
 //Use routers to organise different urls
 //Express leads to routers below when such urls are requested
-app.use("/", globalRouter);
+
+app.use("/", rootRouter);
 app.use("/users", userRouter);
 app.use("/videos", videoRouter);
 
