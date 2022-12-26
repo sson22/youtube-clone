@@ -15,7 +15,6 @@ export const home = async (req, res) => {
   //Use async and await, try-catch for the error
   //await only works inside of the async function
   const videos = await Video.find({}).sort({ createdAt: "desc" }); //await makes program to wait until this line finishes before executing the next line
-  console.log(videos);
   return res.render("home", { pageTitle: "Home", videos });
 };
 //Renders View page

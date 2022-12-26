@@ -1,9 +1,11 @@
 import express from "express";
 import morgan from "morgan";
+import MongoStore from "connect-mongo";
 import session from "express-session";
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
+import { localsMiddleware } from "./middlewares";
 
 const app = express();
 //Assign Pug Template as a view engine
@@ -19,16 +21,21 @@ app.use(logger);
 app.use(express.urlencoded({ extended: true }));
 
 //Initialise session middleware before routers
-//Session remembers everyone who visied website-including the ones who are not logged in
 app.use(
   session({
     //Required configuration
-    secret: "Hello",
-    resave: true,
-    saveUninitialized: true,
+    secret: process.env.COOKIE_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
+    // cookie:{
+    //   maxAge: 20000,
+    // }
   })
 );
 
+//Session remembers everyone who visied website-including the ones who are not logged in
+app.use(localsMiddleware);
 //Use routers to organise different urls
 //Express leads to routers below when such urls are requested
 
