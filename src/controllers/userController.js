@@ -142,15 +142,17 @@ export const getEdit = (req, res) => {
 export const postEdit = async (req, res) => {
   const {
     session: {
-      user: { _id },
+      user: { _id, avatarUrl },
     },
     body: { name, location },
+    file,
   } = req;
+  console.log(file);
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
+      avatarUrl: file ? file.path : avatarUrl,
       name,
-
       location,
     },
     { new: true }
@@ -189,4 +191,4 @@ export const postChangePassword = async (req, res) => {
   await user.save();
   return res.redirect("/users/logout");
 };
-export const see = (req, res) => res.send("See User");
+export const view = (req, res) => res.send("See User");
