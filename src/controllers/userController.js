@@ -139,6 +139,7 @@ export const logout = (req, res) => {
 export const getEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
+//Edit Avatar image file
 export const postEdit = async (req, res) => {
   const {
     session: {
@@ -147,7 +148,7 @@ export const postEdit = async (req, res) => {
     body: { name, location },
     file,
   } = req;
-  console.log(file);
+
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
@@ -191,4 +192,11 @@ export const postChangePassword = async (req, res) => {
   await user.save();
   return res.redirect("/users/logout");
 };
-export const view = (req, res) => res.send("See User");
+export const view = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  if (!user) {
+    return res.status(404).render("404", { pageTitle: "User not found." });
+  }
+  return res.render("users/profile", { pageTitle: user.name, user });
+};

@@ -1,15 +1,5 @@
 import Video from "../models/Video";
 
-/* Call back
-export const home = async (req, res) => {
-  console.log("start");
-  Video.find({}, (error, videos) => {
-    return res.render("home", { pageTitle: "Home", videos });
-  });
-  console.log("finished");
-};
-*/
-
 //Renders Home page
 export const home = async (req, res) => {
   //Use async and await, try-catch for the error
@@ -58,28 +48,19 @@ export const getUpload = (req, res) => {
 };
 //Handle Upload
 export const postUpload = async (req, res) => {
+  const {
+    user: { _id },
+  } = req.session;
+  const { path: fileUrl } = req.file;
   //Recieve the information sent from upload page
   const { title, description, hashtags } = req.body;
 
-  /*
-  //Create a video object using the information recieved
-  const video = new Video({
-    title,
-    description,
-    createdAt: Date.now(),
-    hashtags: hashtags.split(",").map((word) => `#${word}`),
-    meta: {
-      views: 0,
-      rating: 0,
-    },
-  });
-  //Send the created object to db and save it
-  await video.save();
-  */
   try {
     await Video.create({
       title,
       description,
+      fileUrl,
+      owner: _id,
       hashtags: Video.formatHashtags(hashtags),
     });
     return res.redirect("/");

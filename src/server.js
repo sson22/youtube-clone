@@ -38,6 +38,7 @@ app.use(
 app.use(localsMiddleware);
 //Use routers to organise different urls
 //Express leads to routers below when such urls are requested
+
 //Enable Browswer to access contents in the server folder
 app.use("/uploads", express.static("uploads"));
 app.use("/", rootRouter);
